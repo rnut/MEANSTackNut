@@ -3,21 +3,19 @@ var app = express();
 var port = process.env.PORT || 1337;
 var bodyParser = require('body-parser');
 var mongojs = require("mongojs");
-var db = mongojs.connect("localhost/team");
-var team = db.collection('team');
+var db = mongojs.connect("localhost/balllivetv");
+// var team = db.collection('team');
+var programe = db.collection('programe');
 
 
 
-app.use('/teamlist',express.static(__dirname+"/public"));
+app.use('/programe',express.static(__dirname+"/public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-// app.get('/teamlist',function(req,res){
-// 	console.log('/teamlist');
-// 	res.render(__dirname+"/public");
-// });
+
 app.get('/teamlist/json',function(req,res){
 	console.log('teamlist/json');
 	team.find(function(err,docs){
@@ -26,12 +24,12 @@ app.get('/teamlist/json',function(req,res){
 	});
 });
 
-app.post('/teamlist',function(req,res){
-	console.log(req.body);
-	team.insert(req.body,function(err,docs){
-		res.json(docs);
-	});
-});
+// app.post('/programe',function(req,res){
+// 	console.log(req.body);
+// 	team.insert(req.body,function(err,docs){
+// 		res.json(docs);
+// 	});
+// });
 app.delete('/teamlist/:id',function(req,res){
 	var id = req.params.id;
 	team.remove({_id:mongojs.ObjectId(id)},function(err,docs){
@@ -62,6 +60,20 @@ app.put('/teamlist/:id',function(req,res){
 		res.json(docs);
 	});
 });
+
+
+//-----------
+app.get('/programe/json',function(req,res){
+	console.log('json of programe');
+	programe.find(function(err,docs){
+		res.json(docs);
+	});
+});
+//-----------
+
+
+
+
 
 app.get('/',function(req,res){
 	console.log('hello /');
